@@ -1,0 +1,27 @@
+version: '3.7'
+services:
+  nginx:
+    build: requirements/nginx/
+    container_name: nginx
+    ports:
+      - 443:443
+    volumes:
+      - /home/osboxes/data/web:/usr/share/nginx/html
+    networks:
+      - inception
+    restart: always
+  mariadb:
+    build: requirements/mariadb/
+    container_name: mariadb
+    volumes:
+      - /home/osboxes/data/db:/var/lib/mysql
+    networks:
+      - inception
+    env_file:
+      - .env
+    restart: always
+
+networks:
+  inception:
+    driver:
+      bridge
