@@ -1,4 +1,5 @@
-version: '3.7'
+version: '3'
+
 services:
   nginx:
     build: requirements/nginx/
@@ -6,22 +7,42 @@ services:
     ports:
       - 443:443
     volumes:
-      - /home/osboxes/data/web:/usr/share/nginx/html
+      - wordpress:/usr/share/nginx/html
     networks:
       - inception
-    restart: always
-  mariadb:
-    build: requirements/mariadb/
-    container_name: mariadb
-    volumes:
-      - /home/osboxes/data/db:/var/lib/mysql
-    networks:
-      - inception
-    env_file:
-      - .env
     restart: always
 
+  mariadb:
+    build:
+      context: .
+      dockerfile: requirements/mariadb/Dockerfile
+      args:
+        DB_NAME: ${DB_NAME}
+        DB_USER: ${DB_USER}
+        DB_PASS: ${DB_PASS}
+        DB_ROOT: ${DB_ROOT}
+    container_name: mariadb
+    ports:
+      - "3306:3306"
+    networks:
+      - inception
+    volumes:
+      - db:/var/lib/mysql
+    restart: always
+
+volumes:
+  wordpress:
+    driver_opts:
+      o: bind
+      type: none
+      device: /home/${USER}/data/wildberries
+
+  db:
+    driver_opts:
+      o: bind
+      type: none
+      device: /home/${USER}/data/masha
+
 networks:
-  inception:
-    driver:
-      bridge
+    inception:
+        driver: bridge
