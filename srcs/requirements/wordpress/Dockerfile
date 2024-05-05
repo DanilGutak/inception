@@ -1,16 +1,17 @@
-FROM debian:stable-20240311
+FROM debian:bullseye
 
-# Install PHP and PHP-FPM
-RUN apt-get update && apt-get install -y php php-fpm
 
-#Install Wordpress
-RUN apt-get install -y wget && \
-    wget https://wordpress.org/latest.tar.gz && \
-    tar -xvzf latest.tar.gz && \
-    mv wordpress /var/www/html/ && \
-    chown -R www-data:www-data /var/www/html/wordpress && \
-    rm -rf latest.tar.gz
+RUN apt update
+RUN apt upgrade
+RUN apt install php-fpm -y
+RUN apt install php-mysqli -y
+RUN apt install curl -y
 
-EXPOSE 9000
+RUN mkdir -p /run/php
 
-ENTRYPOINT ["php-fpm7.3", "-F"] 
+COPY requirements/wordpress/conf/www.conf /etc/php/7.4/fpm/pool.d/
+COPY requirements/wordpress/install-wordpress.sh .
+
+RUN chmod +x install-wordpress.sh
+
+ENTRYPOINT [ "./install-wordpress.sh" ]
