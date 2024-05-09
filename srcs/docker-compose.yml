@@ -7,7 +7,7 @@ services:
     ports:
       - 443:443
     volumes:
-      - wordpress:/usr/share/nginx/html
+      - wordpress:/var/www/html
     networks:
       - inception
     depends_on:
