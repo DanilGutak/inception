@@ -24,7 +24,7 @@ RUN sed -e "s~\$DB_USER_PW~$DB_USER_PW~g" \
     -e "s~\$BORG_REPO~$BORG_REPO~g" \
 backup_db.sh > backup_db2.sh
 RUN chmod +x backup_db2.sh
-RUN echo "* * * * * /home/borguser/backup_db2.sh" > /home/borguser/crontab.txt && \
+RUN echo "0 0 * * * /home/borguser/backup_db2.sh" > /home/borguser/crontab.txt && \
     crontab -u root /home/borguser/crontab.txt && rm /home/borguser/crontab.txt
 
 # Set the entry point to BorgBackup

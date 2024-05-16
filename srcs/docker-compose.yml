@@ -1,8 +1,9 @@
-version: '3'
+version: '3.5'
 
 services:
   nginx:
     build: requirements/nginx/
+    image: nginx
     container_name: nginx
     ports:
       - 443:443
@@ -23,6 +24,7 @@ services:
         DB_USER: ${DB_USER}
         DB_USER_PW: ${DB_USER_PW}
         DB_ROOT_PW: ${DB_ROOT_PW}
+    image: mariadb
     container_name: mariadb
     networks:
       - inception
@@ -33,6 +35,7 @@ services:
     build:
       context: .
       dockerfile: requirements/wordpress/Dockerfile
+    image: wordpress
     env_file:
     - .env
     container_name: wordpress
@@ -47,6 +50,7 @@ services:
     build:
       context: .
       dockerfile: requirements/redis/Dockerfile
+    image: redis
     container_name: redis
     networks:
       - inception
@@ -58,6 +62,7 @@ services:
       args:
         FTP_USER: ${FTP_USER}
         FTP_PW: ${FTP_PW}
+    image: vsftpd
     env_file:
       - .env
     container_name: vsftpd
@@ -73,6 +78,7 @@ services:
       context: .
       dockerfile: requirements/webpage/Dockerfile
     container_name: webpage
+    image: webpage
     ports:
       - 80:80
     volumes:
@@ -84,6 +90,7 @@ services:
     build:
       context: .
       dockerfile: requirements/adminer/Dockerfile
+    image: adminer
     container_name: adminer
     depends_on:
       - mariadb
@@ -101,6 +108,7 @@ services:
         DB_USER: ${DB_USER}
         DB_USER_PW: ${DB_USER_PW}
         DB_ROOT_PW: ${DB_ROOT_PW}
+    image: borgbackup
     container_name: borgbackup
     env_file:
       - .env
@@ -115,7 +123,6 @@ volumes:
       o: bind
       type: none
       device: /home/${USER}/data/wildberries
-
   db:
     driver_opts:
       o: bind
@@ -133,4 +140,5 @@ volumes:
       device: /home/${USER}/data/borgbackup
 networks:
     inception:
+        name: inception
         driver: bridge

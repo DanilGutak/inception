@@ -4,10 +4,10 @@ FROM debian:bullseye
 RUN apt update 
 RUN apt upgrade
 RUN apt install php-fpm -y \
-php-mysql -y curl -y php-curl -y \
-php-gd -y php-intl -y php-mbstring -y php-soap -y \
-php-xml -y php-xmlrpc -y php-zip -y php-json -y php-imagick -y \
-php-redis -y wget -y
+php-mysql  curl  php-curl  \
+php-gd  php-intl  php-mbstring  php-soap  \
+php-xml  php-xmlrpc  php-zip  php-json  php-imagick  \
+php-redis  wget 
 
 WORKDIR /var/www
 

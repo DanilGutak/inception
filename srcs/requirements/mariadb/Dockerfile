@@ -4,8 +4,7 @@ ARG DB_NAME DB_USER DB_USER_PW DB_ROOT_PW
 
 RUN apk update && apk add mariadb mariadb-client
 
-RUN mkdir /var/run/mysqld
-RUN chown mysql:mysql /var/run/mysqld && chmod 777 /var/run/mysqld
+RUN mkdir /var/run/mysqld && chown mysql:mysql /var/run/mysqld && chmod 777 /var/run/mysqld
 
 COPY  requirements/mariadb/conf/mariadb-server.cnf /etc/my.cnf.d/mariadb-server.cnf
 
