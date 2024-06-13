@@ -107,7 +107,6 @@ services:
         DB_NAME: ${DB_NAME}
         DB_USER: ${DB_USER}
         DB_USER_PW: ${DB_USER_PW}
-        DB_ROOT_PW: ${DB_ROOT_PW}
     image: borgbackup
     container_name: borgbackup
     env_file:
